@@ -154,8 +154,8 @@ function LoginPage() {
               <p>Welcome back! Login to continue</p>
 
               <form onSubmit={handleLogin}>
-                <input name="email" type="email" placeholder="Email" required />
-                <input name="password" type="password" placeholder="Password" required />
+                <input name="email" type="email" placeholder="Email" autocomplete="email" required />
+                <input name="password" type="password" placeholder="Password" autocomplete="current-password" required />
                 <button type="submit">Sign In</button>
               </form>
 
@@ -180,9 +180,9 @@ function LoginPage() {
               <p>Join Aja Internship</p>
 
               <form onSubmit={handleRegister}>
-                <input name="name" placeholder="Full Name" required />
-                <input name="email" type="email" placeholder="Email" required />
-                <input name="password" type="password" placeholder="Password" required />
+                <input name="name" placeholder="Full Name" autocomplete="name" required />
+                <input name="email" type="email" placeholder="Email" autocomplete="email" required />
+                <input name="password" type="password" placeholder="Password" autocomplete="new-password" required />
                 <button type="submit">Register</button>
               </form>
 
@@ -207,6 +207,7 @@ function LoginPage() {
                   name="email"
                   type="email"
                   placeholder="Enter your email"
+                  autocomplete="email"
                   required
                 />
                 <button type="submit">Send Reset Link</button>

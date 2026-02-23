@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   dashboardService,
   internService
@@ -12,6 +13,10 @@ import "../styles/Dashboard.css";
  * Uses service layer for API calls with error handling
  */
 function Dashboard() {
+  /* ================= ROUTER ================= */
+  const navigate = useNavigate();
+  const location = useLocation();
+
   /* ================= USER ================= */
   const userId = localStorage.getItem("userId");
   const [userName, setUserName] = useState(localStorage.getItem("userName") || "Alex");
@@ -61,6 +66,22 @@ function Dashboard() {
     const dedupedLocal = localForUser.filter(lt => !serverIds.has(String(lt.id)));
 
     return dedupedLocal.concat(tasksFromServer || []);
+  };
+
+  /* ================= SYNC URL TO SECTION ================= */
+  useEffect(() => {
+    const pathSegments = location.pathname.split("/").filter(Boolean); // ["dashboard", "tasks"] -> ["tasks"]
+    const sectionFromUrl = pathSegments[1] || "dashboard";
+    if (sectionFromUrl !== section) {
+      setSection(sectionFromUrl);
+    }
+  }, [location.pathname]);
+
+  /* ================= HANDLE SECTION CHANGE ================= */
+  const handleSetSection = (newSection) => {
+    setSection(newSection);
+    const path = newSection === "dashboard" ? "/dashboard" : `/dashboard/${newSection}`;
+    navigate(path);
   };
 
   useEffect(() => {
@@ -209,7 +230,7 @@ function Dashboard() {
 
   const logout = () => {
     localStorage.clear();
-    window.location.href = "/";
+    navigate("/login", { replace: true });
   };
 
 
@@ -229,7 +250,7 @@ function Dashboard() {
     setUserRole(role);
 
     alert("Profile updated");
-    setSection("dashboard");
+    handleSetSection("dashboard");
   };
 
   /* ================= SUBMISSION HANDLER ================= */
@@ -302,42 +323,42 @@ function Dashboard() {
 
           <a
             className={section === "dashboard" ? "active" : ""}
-            onClick={() => setSection("dashboard")}
+            onClick={() => handleSetSection("dashboard")}
           >
             Dashboard
           </a>
 
           <a
             className={section === "tasks" ? "active" : ""}
-            onClick={() => setSection("tasks")}
+            onClick={() => handleSetSection("tasks")}
           >
             My Tasks
           </a>
 
           <a
             className={section === "submissions" ? "active" : ""}
-            onClick={() => setSection("submissions")}
+            onClick={() => handleSetSection("submissions")}
           >
             Submissions
           </a>
 
           <a
             className={section === "certificates" ? "active" : ""}
-            onClick={() => setSection("certificates")}
+            onClick={() => handleSetSection("certificates")}
           >
             Certificates
           </a>
 
           <a
             className={section === "notifications" ? "active" : ""}
-            onClick={() => setSection("notifications")}
+            onClick={() => handleSetSection("notifications")}
           >
             🔔 Notifications
           </a>
 
           <a
             className={section === "resources" ? "active" : ""}
-            onClick={() => setSection("resources")}
+            onClick={() => handleSetSection("resources")}
           >
             📚 Resources
           </a>
@@ -355,14 +376,14 @@ function Dashboard() {
 
               <div
                 className="menu-item"
-                onClick={() => { setSection("profile"); setOpenMenu(false); }}
+                onClick={() => { handleSetSection("profile"); setOpenMenu(false); }}
               >
                 👤 Profile
               </div>
 
               <div
                 className="menu-item"
-                onClick={() => { setSection("settings"); setOpenMenu(false); }}
+                onClick={() => { handleSetSection("settings"); setOpenMenu(false); }}
               >
                 ⚙ Settings
               </div>
