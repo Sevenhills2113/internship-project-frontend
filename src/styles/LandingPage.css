@@ -510,3 +510,78 @@
         display: none;
     }
 }
+/* Container for the scrolling section */
+.deploymentTicker {
+  padding: 3rem 0;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.tickerTitle {
+  text-align: center;
+  color: #a0a0a0;
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.tickerWrapper {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+}
+
+.tickerTrack {
+  display: flex;
+  white-space: nowrap;
+  /* Adjust 30s to make it faster or slower */
+  animation: scroll 30s linear infinite;
+}
+
+/* Pause on hover for readability */
+.tickerWrapper:hover .tickerTrack {
+  animation-play-state: paused;
+}
+
+.tickerItem {
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.internName {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-right: 0.8rem;
+}
+
+.internTech {
+  color: #64ffda; /* Cyan/Teal accent */
+  background: rgba(100, 255, 218, 0.1);
+  padding: 0.3rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  border: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+.dot {
+  margin-left: 2rem;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* The Animation */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
