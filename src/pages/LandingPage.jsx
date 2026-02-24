@@ -122,7 +122,7 @@ function LandingPage() {
       </section>
 
       <footer className="landing-footer">
-        <p>© 2026 InternshipHub. Crafted with ❤️ for developers.</p>
+        <p>© 2026 InternshipHub. Aja Consulting Services LLP.</p>
       </footer>
     </div>
   );
