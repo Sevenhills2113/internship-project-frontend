@@ -9,6 +9,7 @@ import MentorDashboard from "./pages/MentorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import InternsList from "./pages/Interns";
 import SubmissionsPage from "./pages/Submissions";
+import RegisterPage from "./pages/RegisterPage";
 
 function AppContent() {
   const location = useLocation();
@@ -16,7 +17,8 @@ function AppContent() {
 
   // Track last allowed in-app path for back button guard
   useEffect(() => {
-    const isAuthPage = location.pathname === "/" || location.pathname === "/login";
+    const isAuthPage =
+      location.pathname === "/" || location.pathname === "/login";
     if (!isAuthPage) {
       setLastInAppPath(location.pathname);
     }
@@ -26,9 +28,12 @@ function AppContent() {
   useEffect(() => {
     const handlePopstate = () => {
       const token = localStorage.getItem("token");
-      
+
       // If user is logged in and back would take them to login/landing, restore last in-app path
-      if (token && (location.pathname === "/" || location.pathname === "/login")) {
+      if (
+        token &&
+        (location.pathname === "/" || location.pathname === "/login")
+      ) {
         window.history.pushState(null, "", lastInAppPath || "/dashboard");
       }
     };
@@ -47,6 +52,9 @@ function AppContent() {
 
       {/* Dashboard - supports sub-routes for sections */}
       <Route path="/dashboard/*" element={<Dashboard />} />
+
+      {/* Register Page */}
+      <Route path="/register" element={<RegisterPage />} />
 
       {/* Mentor Dashboard */}
       <Route path="/mentor" element={<MentorDashboard />} />
