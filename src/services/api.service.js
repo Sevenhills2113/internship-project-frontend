@@ -10,7 +10,8 @@ async function request(endpoint, options = {}) {
 
   if (token) headers["Authorization"] = `Bearer ${token}`;
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
+  const url = `${BASE_URL}${endpoint}`;
+  const response = await fetch(url, {
     headers,
     ...options,
   });
@@ -23,6 +24,14 @@ async function request(endpoint, options = {}) {
   }
 
   if (!response.ok) {
+    // DEBUG: log error details to console for troubleshooting
+    console.error(
+      `[API ERROR] ${options.method || "GET"} ${url} | Status: ${response.status}`,
+      {
+        message: data?.message,
+        fullResponse: data,
+      },
+    );
     throw new Error(data?.message || "Server Error");
   }
 

@@ -4,15 +4,15 @@ import "../styles/LandingPage.css";
 
 // 1. Add the placement data here
 const placements = [
-  { name: "Vinitha badi", tech: "Java Developer" },
-  { name: "Yedukondalu Thontla", tech: "Java Engineer" },
-  { name: "Dileep", tech: "DevOps Specialist" },
-  { name: "Ashokkumar Nimmaturi", tech: "Salesforce Admin" },
-  { name: "Jhansi Rani Garidepalli", tech: "Cloud Architect" },
-  { name: "Radhika Nampally", tech: "Full Stack Dev" },
-  { name: "Alina Malla", tech: "Data Scientist" },
-  { name: "Sravani Annapureddy", tech: "Java Developer" },
-  { name: "Ramya Peddinti", tech: "Python Specialist" },
+  { name: "Vinitha badi", company: "Google", role: "Java Developer", image: "👩‍💻" },
+  { name: "Yedukondalu Thontla", company: "Amazon", role: "Java Engineer", image: "👨‍💼" },
+  { name: "Dileep", company: "Microsoft", role: "DevOps Specialist", image: "👨‍💻" },
+  { name: "Ashokkumar Nimmaturi", company: "Salesforce", role: "Salesforce Admin", image: "👨‍💼" },
+  { name: "Jhansi Rani Garidepalli", company: "AWS", role: "Cloud Architect", image: "👩‍💼" },
+  { name: "Radhika Nampally", company: "Meta", role: "Full Stack Dev", image: "👩‍💻" },
+  { name: "Alina Malla", company: "IBM", role: "Data Scientist", image: "👩‍💼" },
+  { name: "Sravani Annapureddy", company: "TCS", role: "Java Developer", image: "👩‍💻" },
+  { name: "Ramya Peddinti", company: "Infosys", role: "Python Specialist", image: "👩‍💼" },
 ];
 
 function LandingPage() {
@@ -102,9 +102,14 @@ function LandingPage() {
             {/* We map twice to create the infinite loop effect */}
             {[...placements, ...placements].map((item, index) => (
               <div key={index} className="tickerItem">
-                <span className="internName">{item.name}</span>
-                <span className="internTech">{item.tech}</span>
-                <span className="dot">•</span>
+                <div className="intern-card-item">
+                  <div className="intern-avatar">{item.image}</div>
+                  <div className="intern-details">
+                    <h4 className="intern-name">{item.name}</h4>
+                    <p className="intern-company">{item.company}</p>
+                    <p className="intern-role">{item.role}</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -116,9 +121,46 @@ function LandingPage() {
       <section className="features-section">
         <div className="section-header">
           <h2>Why Choose Us?</h2>
-          <p>Everything you need to kickstart your professional journey.</p>
+          <p>Transform your career with structured guidance, real-world projects, and proven results.</p>
         </div>
-        {/* ... your existing feature cards ... */}
+        
+        <div className="features-grid">
+          <div className="feature-card">
+            <div className="icon-box">🎯</div>
+            <h3>Industry-Aligned Skills</h3>
+            <p>Learn the exact technologies and practices that top companies like Google, Amazon, and Microsoft are using today. Our curriculum is updated quarterly to stay ahead of industry trends.</p>
+          </div>
+
+          <div className="feature-card">
+            <div className="icon-box">👥</div>
+            <h3>Expert Mentorship</h3>
+            <p>Get paired with experienced professionals from Fortune 500 companies who guide you through real-world challenges, share career insights, and open doors to career opportunities.</p>
+          </div>
+
+          <div className="feature-card">
+            <div className="icon-box">🚀</div>
+            <h3>Real-World Projects</h3>
+            <p>Work on actual production-level projects that matter. Build a portfolio that impresses hiring managers and demonstrates your ability to solve complex problems in a professional environment.</p>
+          </div>
+
+          <div className="feature-card">
+            <div className="icon-box">📈</div>
+            <h3>Guaranteed Placement Support</h3>
+            <p>9 out of 10 interns secure placements with leading tech companies. We provide interview prep, resume coaching, and direct introductions to hiring managers in our partner network.</p>
+          </div>
+
+          <div className="feature-card">
+            <div className="icon-box">🏆</div>
+            <h3>Verified Certificates</h3>
+            <p>Earn industry-recognized certifications that validate your skills. These certificates are trusted by top companies and significantly boost your job prospects and salary negotiations.</p>
+          </div>
+
+          <div className="feature-card">
+            <div className="icon-box">💼</div>
+            <h3>Lifetime Career Network</h3>
+            <p>Join a growing community of 10,000+ successful interns. Access exclusive job boards, networking events, and opportunities for long-term career growth throughout your professional journey.</p>
+          </div>
+        </div>
       </section>
 
       <footer className="landing-footer">

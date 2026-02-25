@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth.js";
-import { validateLoginForm } from "../utils/validation.js"; // Removed register validation
+import { validateLoginForm } from "../utils/validation.js";
 import { formatErrorMessage } from "../utils/errorHandler.js";
-import { authService } from "../services/api.service"; // <-- ADDED SPRING BOOT CONNECTION
+import { authService } from "../services/api.service";
 import "../styles/LoginPage.css";
 
 function LoginPage() {
   const [page, setPage] = useState("login");
   const [role, setRole] = useState("intern");
-  const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
@@ -18,11 +17,11 @@ function LoginPage() {
   /* ================= LOGIN ================= */
   const handleLogin = async (e) => {
     e.preventDefault();
-    setFormErrors({});
 
     const email = e.target.email.value.trim();
     const password = e.target.password.value;
 
+    // ✅ Your Custom Validation
     const validation = validateLoginForm(email, password);
     if (!validation.isValid) {
       alert("Login Error: Please check your email and password.");
@@ -51,44 +50,40 @@ function LoginPage() {
   /* ================= REGISTER ================= */
   const handleRegister = async (e) => {
     e.preventDefault();
-    console.log("🚨 REGISTER BUTTON WAS CLICKED!"); // This will finally show up!
 
     const name = e.target.name.value.trim();
     const email = e.target.email.value.trim();
     const password = e.target.password.value;
 
-    // 1. Simple, direct validation that won't fail silently
     if (!name || !email || !password) {
       alert("Please fill in all fields.");
       return;
     }
+
     if (password.length < 6) {
-      alert("Password must be at least 6 characters long.");
+      alert("Password must be at least 6 characters.");
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      console.log("🚀 Sending data to Spring Boot...");
-
-      // 2. Direct connection to your Spring Boot API
       const data = await authService.register({
-        name: name,
-        email: email,
-        password: password,
-        role: role.toUpperCase(), // Sends "INTERN", "MENTOR", or "ADMIN"
+        name,
+        email,
+        password,
+        role: role.toUpperCase(),
       });
 
-      console.log("✅ Registration Success:", data);
+      console.log("Registration Success:", data);
+
       alert(
         `${role.toUpperCase()} Account created successfully! Please sign in.`,
       );
 
-      // Flip back to login screen
       setPage("login");
     } catch (err) {
-      console.error("❌ Register Error:", err);
+      console.error("Register Error:", err);
       alert(err.message || "Registration failed. Email might already exist.");
     } finally {
       setIsSubmitting(false);
@@ -98,11 +93,14 @@ function LoginPage() {
   /* ================= FORGOT ================= */
   const handleForgot = (e) => {
     e.preventDefault();
+
     const email = e.target.email.value.trim();
+
     if (!email) {
-      alert("Email is required");
+      alert("Email is required for password reset.");
       return;
     }
+
     alert(`Password reset link sent to ${email}`);
     setPage("login");
   };
@@ -146,21 +144,31 @@ function LoginPage() {
             <>
               <h2>{role.toUpperCase()} Sign In</h2>
               <p>Welcome back! Login to continue</p>
-              <form onSubmit={handleLogin}>
-                <input name="email" type="email" placeholder="Email" required />
+
+              <form onSubmit={handleLogin} noValidate>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  autoComplete="email"
+                  required
+                />
                 <input
                   name="password"
                   type="password"
                   placeholder="Password"
+                  autoComplete="current-password"
                   required
                 />
                 <button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Loading..." : "Sign In"}
+                  {isSubmitting ? "Signing in..." : "Sign In"}
                 </button>
               </form>
+
               <p className="forgot-text" onClick={() => setPage("forgot")}>
                 Forgot Password?
               </p>
+
               <p className="switch-text">
                 Don’t have an account?{" "}
                 <span onClick={() => setPage("register")}>Register</span>
@@ -173,20 +181,33 @@ function LoginPage() {
             <>
               <h2>{role.toUpperCase()} Register</h2>
               <p>Join Aja Internship</p>
-              {/* Added noValidate so HTML5 doesn't block the click */}
+
               <form onSubmit={handleRegister} noValidate>
-                <input name="name" placeholder="Full Name" required />
-                <input name="email" type="email" placeholder="Email" required />
+                <input
+                  name="name"
+                  placeholder="Full Name"
+                  autoComplete="name"
+                  required
+                />
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Email"
+                  autoComplete="email"
+                  required
+                />
                 <input
                   name="password"
                   type="password"
                   placeholder="Password"
+                  autoComplete="new-password"
                   required
                 />
                 <button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Loading..." : "Register"}
+                  {isSubmitting ? "Registering..." : "Register"}
                 </button>
               </form>
+
               <p className="switch-text">
                 Already have an account?{" "}
                 <span onClick={() => setPage("login")}>Login</span>
@@ -199,74 +220,23 @@ function LoginPage() {
             <>
               <h2>Forgot Password</h2>
               <p>Enter your email to reset password</p>
-              <form onSubmit={handleForgot}>
+
+              <form onSubmit={handleForgot} noValidate>
                 <input
                   name="email"
                   type="email"
                   placeholder="Enter your email"
+                  autoComplete="email"
                   required
                 />
                 <button type="submit">Send Reset Link</button>
               </form>
+
               <p className="switch-text">
                 Back to <span onClick={() => setPage("login")}>Login</span>
               </p>
             </>
           )}
-        </div>
-
-        {/* RIGHT SIDE INFO BOX */}
-        <div className="info-box">
-          <h2 className="why">Why Choose Aja Online Internship?</h2>
-          <p className="info-desc">
-            Build skills, gain experience, and grow your career with us.
-          </p>
-          <div className="features-grid">
-            <div className="feature-card">
-              🎯
-              <div>
-                <h3>Goal-Oriented</h3>
-                <p>Clear learning objectives</p>
-              </div>
-            </div>
-            <div className="feature-card">
-              👥
-              <div>
-                <h3>Mentorship</h3>
-                <p>Industry experts</p>
-              </div>
-            </div>
-            <div className="feature-card">
-              📈
-              <div>
-                <h3>Progress</h3>
-                <p>Track achievements</p>
-              </div>
-            </div>
-            <div className="feature-card">
-              🏆
-              <div>
-                <h3>Certificates</h3>
-                <p>Verified credentials</p>
-              </div>
-            </div>
-          </div>
-          <div className="bottom-bar">
-            <div>⏰ 24/7 Access</div>
-            <div className="divider"></div>
-            <div>🎧 Support</div>
-            <div className="divider"></div>
-            <div>🌍 Global</div>
-          </div>
-          <div className="trust-box">
-            <h4>Trusted & Secure</h4>
-            <div className="trust-stats">
-              <span>🛡️ SSL</span>
-              <span>🎖️ Certified</span>
-              <span>🔒 Private</span>
-            </div>
-            <p>500+ Institutions • 10k+ Users</p>
-          </div>
         </div>
       </div>
     </div>
