@@ -1,4 +1,4 @@
-const BASE_URL = "/api";
+const BASE_URL = "http://localhost:8081/api";
 
 async function request(endpoint, options = {}) {
   const token = localStorage.getItem("token");
@@ -44,11 +44,12 @@ class AuthService {
 
     // Normalize response shapes: support { token, id, name, role } and { token, user: { id, name, role } }
     const token = res.token || res.data?.token;
-    const userObj = res.user || res.data?.user || {
-      id: res.id || res.data?.id,
-      name: res.name || res.data?.name,
-      role: res.role || res.data?.role,
-    };
+    const userObj = res.user ||
+      res.data?.user || {
+        id: res.id || res.data?.id,
+        name: res.name || res.data?.name,
+        role: res.role || res.data?.role,
+      };
 
     if (token) localStorage.setItem("token", token);
     if (userObj?.id) localStorage.setItem("userId", userObj.id);
